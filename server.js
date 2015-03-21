@@ -28,9 +28,9 @@ app.post('/join', function(req, res) {
 		}
 	}
 
-	if (confirm[parseInt(req.body.id)] != undefined) {
+	/*if (confirm[parseInt(req.body.id)] != undefined) {
 		found = true;
-	}
+	}*/
 
 	if (!found) {
 		queue.push({
@@ -83,7 +83,7 @@ app.get('/confirm/remove/:id', function(req, res) {
 	if (confirm[req.params.id] && confirm[req.params.id.players) {
 		id2 = confirm[req.params.id].players[0].id == id1 ? confirm[req.params.id].players[1].id : confirm[req.params.id].players[0].id;
 	}
-	
+
 	confirm[id1] = undefined;
 	confirm[id2] = undefined;
 	res.end('removed');
