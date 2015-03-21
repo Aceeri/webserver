@@ -142,6 +142,8 @@ setInterval(function() {
 			} else if (acceptRequests[i].timestamp < acceptExpiration || canceled) {
 				response.end('');
 			}
+		} else {
+			response.end('');
 		}
 	}
 }, 1000);
