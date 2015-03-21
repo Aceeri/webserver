@@ -123,7 +123,7 @@ setInterval(function() {
 		response = acceptRequests[i].response;
 		var set = true;
 		var canceled = false;
-		console.log(acceptReqests[i].request.params.id);
+		console.log(acceptRequests[i].request.params.id);
 		for (var l = 0; l < confirm[parseInt(acceptRequests[i].request.params.id)].players.length; l ++) {
 			if (confirm[parseInt(acceptRequests[i].request.params.id)].players[l].accept == undefined) {
 				set = false;
