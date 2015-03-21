@@ -32,6 +32,7 @@ app.post('/join', function(req, res) {
 		found = true;
 	}*/
 	console.log(req.body.id + " " + found);
+	
 	if (!found) {
 		queue.push({
 			name 	: req.body.name,
