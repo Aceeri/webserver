@@ -168,6 +168,8 @@ app.post('/accept', function(req, res) {
 	} else if (confirm[userId].players[1].id == userId) {
 		confirm[userId].players[1].accept = response;
 	}
+
+	res.send("accept");
 })
 
 app.get('/arenas/remove/:id', function(req, res) {
