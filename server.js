@@ -32,7 +32,7 @@ app.post('/join', function(req, res) {
 		found = true;
 	}*/
 	console.log(req.body.id + " " + found);
-	
+
 	if (!found) {
 		queue.push({
 			name 	: req.body.name,
@@ -70,7 +70,7 @@ app.get('/leave/:id', function(req, res) {
 	}
 
 	for (i = 0; i < confirmRequests.length; i ++) {
-		if (confirmRequests[i].request.params.id == req.params.id) {
+		if (parseInt(confirmRequests[i].request.params.id) == req.params.id) {
 			confirmRequests[i].response.end('left');
 		}
 	}
@@ -79,7 +79,7 @@ app.get('/leave/:id', function(req, res) {
 });
 
 app.get('/confirm/remove/:id', function(req, res) {
-	confirm[req.params.id] = undefined;
+	confirm[parseInt(req.params.id)] = undefined;
 	res.end('removed');
 });
 
@@ -109,8 +109,8 @@ setInterval(function() {
 	var response;
 	for (var i = confirmRequests.length - 1; i >= 0; i--) {
 		response = confirmRequests[i].response;
-		if (confirm[confirmRequests[i].request.params.id] != undefined) {
-			response.write(JSON.stringify(confirm[confirmRequests[i].request.params.id]));
+		if (confirm[parseInt(confirmRequests[i].request.params.id)] != undefined) {
+			response.write(JSON.stringify(confirm[parseInt(confirmRequests[i].request.params.id)]));
 			response.end();
 			confirmRequests.splice(i, 1);
 		//check if request has polled for more than 28 seconds
@@ -123,11 +123,10 @@ setInterval(function() {
 		response = acceptRequests[i].response;
 		var set = true;
 		var canceled = false;
-		for (var l = 0; l < confirm[acceptRequests[i].request.params.id].players.length; l ++) {
-			console.log()
-			if (confirm[acceptRequests[i].request.params.id].players[l].accept == undefined) {
+		for (var l = 0; l < confirm[parseInt(acceptRequests[i].request.params.id)].players.length; l ++) {
+			if (confirm[parseInt(acceptRequests[i].request.params.id)].players[l].accept == undefined) {
 				set = false;
-			} else if (confirm[acceptRequests[i].request.params.id].players[l].accept == 2) {
+			} else if (confirm[parseInt(acceptRequests[i].request.params.id)].players[l].accept == 2) {
 				canceled = true;
 				break;
 			}
