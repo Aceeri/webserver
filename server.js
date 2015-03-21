@@ -110,7 +110,7 @@ app.get('/confirm/:id', function(req, res) {
 });
 
 var acceptRequests = [ ];
-app.get('/accept/add/:id', function(req, res) {
+app.get('/accept/:id', function(req, res) {
 	acceptRequests.push({
 		request 	: req,
 		response	: res,
