@@ -140,6 +140,7 @@ setInterval(function() {
 				acceptRequests.splice(i, 1);
 			} else if (acceptRequests[i].timestamp < acceptExpiration || canceled) {
 				response.end('');
+				acceptRequests.splice(i, 1);
 			}
 		}
 	}
