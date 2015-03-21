@@ -110,7 +110,7 @@ app.get('/confirm/:id', function(req, res) {
 });
 
 var acceptRequests = [ ];
-app.get('/accept/:id', function(req, res) {
+app.get('/accept/add/:id', function(req, res) {
 	acceptRequests.push({
 		request 	: req,
 		response	: res,
@@ -144,7 +144,7 @@ setInterval(function() {
 			if (confirm[acceptRequests[i].request.params.id].players[l].accept != undefined) {
 				set = false;
 				break;
-			} else if (onfirm[acceptRequests[i].request.params.id].players[l].accept != 0) {
+			} else if (confirm[acceptRequests[i].request.params.id].players[l].accept != 0) {
 				canceled = true;
 				break;
 			}
@@ -160,7 +160,7 @@ setInterval(function() {
 	}
 }, 1000);
 
-app.post('/confirm/accept', function(req, res) {
+app.post('/accept', function(req, res) {
 	var response = parseInt(req.body.response);
 	var userId   = parseInt(req.body.userId);
 	if (confirm[userId].players[0].id == userId) {
