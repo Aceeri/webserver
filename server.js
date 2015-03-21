@@ -31,7 +31,7 @@ app.post('/join', function(req, res) {
 	/*if (confirm[parseInt(req.body.id)] != undefined) {
 		found = true;
 	}*/
-
+	console.log(req.body.id + " " + found);
 	if (!found) {
 		queue.push({
 			name 	: req.body.name,
