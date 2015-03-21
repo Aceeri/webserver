@@ -109,9 +109,20 @@ app.get('/confirm/:id', function(req, res) {
 	});
 });
 
+var acceptRequests = [ ];
+app.get('/accept/:id', function(req, res) {
+	acceptRequests.push({
+		request 	: req,
+		response	: res,
+		timestamp	: new Date().getTime()
+	});
+});
+
 //check every second for response
 setInterval(function() {
 	var expiration = new Date().getTime() - 28000;
+	var acceptExpiration = new Date().getTime() - 20000;
+
 	var response;
 	for (var i = confirmRequests.length - 1; i >= 0; i--) {
 		response = confirmRequests[i].response;
@@ -121,10 +132,33 @@ setInterval(function() {
 			confirmRequests.splice(i, 1);
 		//check if request has polled for more than 28 seconds
 		} else if (confirmRequests[i].timestamp < expiration) {
-			response.end("");
+			response.end('');
 		}
 	}
-}, 500);
+
+	for (var i = acceptRequests.length - 1; i >= 0; i--) {
+		response = acceptRequests[i].response;
+		var set = true;
+		var canceled = false;
+		for (var l = 0; l < confirm[acceptRequests[i].request.params.id].players.length; i ++) {
+			if (confirm[acceptRequests[i].request.params.id].players[l].accept != undefined) {
+				set = false;
+				break;
+			} else if (onfirm[acceptRequests[i].request.params.id].players[l].accept != 0) {
+				canceled = true;
+				break;
+			}
+		}
+		
+		if (set && !canceled) {
+			response.write('accepted');
+			response.end();
+			acceptRequests.splice(i, 1);
+		} else if (acceptRequests[i].timestamp < acceptExpiration || canceled) {
+			response.end('');
+		}
+	}
+}, 1000);
 
 app.post('/confirm/accept', function(req, res) {
 	var response = parseInt(req.body.response);
