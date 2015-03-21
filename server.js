@@ -77,27 +77,12 @@ app.get('/leave/:id', function(req, res) {
 	res.send("removed");
 });
 
-app.get('/confirm/add/:id', function(req, res) {
-	req.params.id = parseInt(req.params.id);
-	var c         = confirm[req.params.id];
-
-	if (c.players[0].id == req.params.id) {
-		c.players[0].confirm = true;
-	} else if (c.players[1].id == req.params.id) {
-		c.players[1].confirm = true;
-	}
-
-	if (c.players[0].confirm && c.players[1].confirm) {
-		arenas[c.id] = { players : [ c.players[0], c.players[1] ], arenaid : c.id, type : c.type, set : "Players2" };
-	}
-
-	res.end("");
-});
-
 app.get('/confirm/remove/:id', function(req, res) {
-	confirm[confirm[req.params.id].players[0].id] = undefined;
-	confirm[confirm[req.params.id].players[1].id] = undefined;
-	res.end("");
+	var id1 = req.params.id;
+	var id2 = confirm[req.params.id].players[0].id == id1 ? confirm[req.params.id].players[1].id : confirm[req.params.id].players[0].id;
+	confirm[id1] = undefined;
+	confirm[id2] = undefined;
+	res.end('');
 });
 
 var confirmRequests = [ ];
