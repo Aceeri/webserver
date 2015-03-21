@@ -78,11 +78,15 @@ app.get('/leave/:id', function(req, res) {
 });
 
 app.get('/confirm/remove/:id', function(req, res) {
-	var id1 = req.params.id;
-	var id2 = confirm[req.params.id].players[0].id == id1 ? confirm[req.params.id].players[1].id : confirm[req.params.id].players[0].id;
+	var id1 = req.params.id;\
+	var id2;
+	if (confirm[req.params.id] && confirm[req.params.id.players) {
+		id2 = confirm[req.params.id].players[0].id == id1 ? confirm[req.params.id].players[1].id : confirm[req.params.id].players[0].id;
+	}
+	
 	confirm[id1] = undefined;
 	confirm[id2] = undefined;
-	res.end('');
+	res.end('removed');
 });
 
 var confirmRequests = [ ];
