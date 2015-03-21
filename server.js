@@ -140,9 +140,8 @@ setInterval(function() {
 		response = acceptRequests[i].response;
 		var set = true;
 		var canceled = false;
-		console.log(confirm[acceptRequests[i].request.params.id]);
-		console.log(acceptRequests[i].request.params.id);
-		for (var l = 0; l < confirm[acceptRequests[i].request.params.id].players.length; i ++) {
+		for (var l = 0; l < confirm[acceptRequests[i].request.params.id].players.length; l ++) {
+			console.log()
 			if (confirm[acceptRequests[i].request.params.id].players[l].accept == undefined) {
 				set = false;
 				break;
