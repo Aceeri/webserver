@@ -144,7 +144,6 @@ setInterval(function() {
 			console.log()
 			if (confirm[acceptRequests[i].request.params.id].players[l].accept == undefined) {
 				set = false;
-				break;
 			} else if (confirm[acceptRequests[i].request.params.id].players[l].accept == 2) {
 				canceled = true;
 				break;
