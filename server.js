@@ -124,21 +124,24 @@ setInterval(function() {
 		var set = true;
 		var canceled = false;
 		console.log(acceptRequests[i].request.params.id);
-		for (var l = 0; l < confirm[parseInt(acceptRequests[i].request.params.id)].players.length; l ++) {
-			if (confirm[parseInt(acceptRequests[i].request.params.id)].players[l].accept == undefined) {
-				set = false;
-			} else if (confirm[parseInt(acceptRequests[i].request.params.id)].players[l].accept == 2) {
-				canceled = true;
-				break;
+		if (confirm[parseInt(acceptRequests[i].request.params.id)] != undefined) {}
+			for (var l = 0; l < confirm[parseInt(acceptRequests[i].request.params.id)].players.length; l ++) {
+				if (confirm[parseInt(acceptRequests[i].request.params.id)].players[l].accept == undefined) {
+					set = false;
+				} else if (confirm[parseInt(acceptRequests[i].request.params.id)].players[l].accept == 2) {
+					canceled = true;
+					break;
+				}
 			}
-		}
+
 		
-		if (set && !canceled) {
-			response.write('accepted');
-			response.end();
-			acceptRequests.splice(i, 1);
-		} else if (acceptRequests[i].timestamp < acceptExpiration || canceled) {
-			response.end('');
+			if (set && !canceled) {
+				response.write('accepted');
+				response.end();
+				acceptRequests.splice(i, 1);
+			} else if (acceptRequests[i].timestamp < acceptExpiration || canceled) {
+				response.end('');
+			}
 		}
 	}
 }, 1000);
