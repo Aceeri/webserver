@@ -123,7 +123,6 @@ setInterval(function() {
 		response = acceptRequests[i].response;
 		var set = true;
 		var canceled = false;
-		console.log(acceptRequests[i].request.params.id);
 		if (confirm[parseInt(acceptRequests[i].request.params.id)] != undefined) {
 			for (var l = 0; l < confirm[parseInt(acceptRequests[i].request.params.id)].players.length; l ++) {
 				if (confirm[parseInt(acceptRequests[i].request.params.id)].players[l].accept == undefined) {
@@ -170,7 +169,6 @@ app.get('/arenas/:id', function(req, res) {
 });
 
 app.get('/queue', function(req, res) {
-	console.log(req.ip);
 	res.send(queue);
 })
 
