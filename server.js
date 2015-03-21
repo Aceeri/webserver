@@ -124,7 +124,7 @@ setInterval(function() {
 		var set = true;
 		var canceled = false;
 		console.log(acceptRequests[i].request.params.id);
-		if (confirm[parseInt(acceptRequests[i].request.params.id)] != undefined) {}
+		if (confirm[parseInt(acceptRequests[i].request.params.id)] != undefined) {
 			for (var l = 0; l < confirm[parseInt(acceptRequests[i].request.params.id)].players.length; l ++) {
 				if (confirm[parseInt(acceptRequests[i].request.params.id)].players[l].accept == undefined) {
 					set = false;
