@@ -31,7 +31,6 @@ app.post('/join', function(req, res) {
 	/*if (confirm[parseInt(req.body.id)] != undefined) {
 		found = true;
 	}*/
-	console.log(req.body.id + " " + found);
 
 	if (!found) {
 		queue.push({
@@ -41,19 +40,6 @@ app.post('/join', function(req, res) {
 			rank 	: parseInt(req.body.rank),
 			type 	: req.body.type
 		});
-
-		for (p1 = 0; p1 < queue.length; p1++) {
-			for (p2 = 0; p2 < queue.length; p2 ++) {
-				var player1 = queue[p1];
-				var player2 = queue[p2];
-				if (player1.type == player2.type && player1.id != player2.id && Math.abs(player1.rank - player2.rank) <= 50) {
-					queue.splice((p1 > p2) ? p1 : p2, 1);
-					queue.splice((p1 > p2) ? p2 : p1, 1);
-					confirm[player1.id] = { players : [ player1, player2 ], id : player1.placeid, type : player1.type };
-					confirm[player2.id] = confirm[player1.id];
-				}
-			}
-		}
 		res.send("added");
 	} else {
 		res.send("rejected");
@@ -105,6 +91,19 @@ app.get('/accept/:id', function(req, res) {
 setInterval(function() {
 	var expiration = new Date().getTime() - 28000;
 	var acceptExpiration = new Date().getTime() - 20000;
+
+	for (p1 = 0; p1 < queue.length; p1++) {
+		for (p2 = 0; p2 < queue.length; p2 ++) {
+			var player1 = queue[p1];
+			var player2 = queue[p2];
+			if (player1.type == player2.type && player1.id != player2.id && Math.abs(player1.rank - player2.rank) <= 50) {
+				queue.splice((p1 > p2) ? p1 : p2, 1);
+				queue.splice((p1 > p2) ? p2 : p1, 1);
+				confirm[player1.id] = { players : [ player1, player2 ], id : player1.placeid, type : player1.type };
+				confirm[player2.id] = confirm[player1.id];
+			}
+		}
+	}
 
 	var response;
 	for (var i = confirmRequests.length - 1; i >= 0; i--) {
