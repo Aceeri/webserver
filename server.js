@@ -123,14 +123,17 @@ setInterval(function() {
 		response = acceptRequests[i].response;
 		var set = true;
 		var canceled = false;
-		console.log(confirm[parseInt(acceptRequests[i].request.params.id)]);
-		if (confirm[parseInt(acceptRequests[i].request.params.id)] != undefined) {
-			for (var l = 0; l < confirm[parseInt(acceptRequests[i].request.params.id)].players.length; l ++) {
-				if (confirm[parseInt(acceptRequests[i].request.params.id)].players[l].accept == undefined) {
+		var playerIndex;
+		var request = confirm[parseInt(acceptRequests[i].request.params.id)];
+		if (request != undefined) {
+			for (var l = 0; l < request.players.length; l ++) {
+				if (request.players[l].accept == undefined) {
 					set = false;
-				} else if (confirm[parseInt(acceptRequests[i].request.params.id)].players[l].accept == 2) {
+				} else if (request.players[l].accept == 2) {
 					canceled = true;
-					break;
+					if (request.players[l].id == parseInt(acceptRequests[i].request.params.id)) {
+						playerIndex = l;
+					}
 				}
 			}
 
@@ -138,9 +141,17 @@ setInterval(function() {
 			if (set && !canceled) {
 				response.write('accepted');
 				response.end();
+				confirm[parseInt(acceptRequests[i].request.params.id)] = undefined;
 				acceptRequests.splice(i, 1);
 			} else if (acceptRequests[i].timestamp < acceptExpiration || canceled) {
-				response.end('');
+				if (request.players[playerIndex].accept == 2 || request.players[playerIndex].accept == 0) {
+					response.end('');
+				} else {
+					queue.push(request.players[playerIndex]);
+					response.write('added');
+					response.end('');
+				}
+				confirm[parseInt(acceptRequests[i].request.params.id)] = undefined;
 				acceptRequests.splice(i, 1);
 			}
 		}
@@ -173,7 +184,7 @@ app.get('/queue', function(req, res) {
 })
 
 app.get('/', function(req, res) {
-	res.send('test');
+	res.send('');
 });
 
 app.listen(port, ipaddress, function() {
