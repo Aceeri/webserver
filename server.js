@@ -1,8 +1,8 @@
 #!/bin/env node
+require('newrelic');
 var express = require('express');
 var fs      = require('fs');
 var qs      = require('querystring');
-require('newrelic');
 
 var ipaddress 	= process.env.OPENSHIFT_NODEJS_IP;
 var port 		= process.env.OPENSHIFT_NODEJS_PORT || 8080;
