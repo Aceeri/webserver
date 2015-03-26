@@ -21,22 +21,21 @@ var type = app.param("/^\w+$/");
 app.use(express.bodyParser());
 
 app.post('/join', function(req, res) {
+	var userId = parseInt(req.body.id);
 	var found = false;
 	for (i = 0; i < queue.length; i ++) {
-		if (queue[i].id == parseInt(req.body.id)) {
+		if (queue[i].id == userId) {
 			found = true;
 			break;
 		}
 	}
 
-	/*if (confirm[parseInt(req.body.id)] != undefined) {
-		found = true;
-	}*/
+	confirm[userId] = undefined;
 
 	if (!found) {
 		queue.push({
 			name 	: req.body.name,
-			id 		: parseInt(req.body.id),
+			id 		: userId,
 			placeid : parseInt(req.body.placeid),
 			rank 	: parseInt(req.body.rank),
 			type 	: req.body.type
@@ -48,17 +47,18 @@ app.post('/join', function(req, res) {
 });
 
 app.get('/leave/:id', function(req, res) {
-	req.params.id = parseInt(req.params.id);
+	var id = parseInt(req.params.id);
 	for (player = 0; player < queue.length; player++) {
-		if (queue[player].id == req.params.id) {
+		if (queue[player].id == id) {
 			queue.splice(player, 1);
 			break;
 		}
 	}
 
 	for (i = 0; i < confirmRequests.length; i ++) {
-		if (parseInt(confirmRequests[i].request.params.id) == req.params.id) {
+		if (parseInt(confirmRequests[i].request.params.id) == is) {
 			confirmRequests[i].response.end('left');
+			confirmRequests.splice(i, 1);
 		}
 	}
 
@@ -90,8 +90,8 @@ app.get('/accept/:id', function(req, res) {
 
 //check every second for response
 setInterval(function() {
-	var expiration = new Date().getTime() - 28000;
-	var acceptExpiration = new Date().getTime() - 20000;
+	var expiration 			= new Date().getTime() - 28000;
+	var acceptExpiration 	= new Date().getTime() - 20000;
 
 	for (p1 = 0; p1 < queue.length; p1++) {
 		for (p2 = 0; p2 < queue.length; p2 ++) {
@@ -113,7 +113,6 @@ setInterval(function() {
 			response.write(JSON.stringify(confirm[parseInt(confirmRequests[i].request.params.id)]));
 			response.end();
 			confirmRequests.splice(i, 1);
-		//check if request has polled for more than 28 seconds
 		} else if (confirmRequests[i].timestamp < expiration) {
 			response.end('');
 		}
@@ -176,7 +175,7 @@ app.get('/arenas/remove/:id', function(req, res) {
 });
 
 app.get('/arenas/:id', function(req, res) {
-	res.send(arenas[parseInt(req.params.id)]);
+	res.send(arenas[parseInt(req.params.id)] || '');
 });
 
 app.get('/queue', function(req, res) {
