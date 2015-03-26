@@ -177,6 +177,7 @@ app.get('/arenas/remove/:id', function(req, res) {
 app.get('/arenas/:id', function(req, res) {
 	console.log(arenas[parseInt(req.params.id)] || "");
 	res.send(arenas[parseInt(req.params.id)] || "");
+	//test
 });
 
 app.get('/queue', function(req, res) {
