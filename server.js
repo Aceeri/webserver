@@ -56,7 +56,7 @@ app.get('/leave/:id', function(req, res) {
 	}
 
 	for (i = 0; i < confirmRequests.length; i ++) {
-		if (parseInt(confirmRequests[i].request.params.id) == is) {
+		if (parseInt(confirmRequests[i].request.params.id) == id) {
 			confirmRequests[i].response.end('left');
 			confirmRequests.splice(i, 1);
 		}
