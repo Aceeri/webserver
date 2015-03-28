@@ -32,10 +32,10 @@ var getRequest 	= [
 		['/accept/:id', matchmaking.accept]
 ];
 
-for (var i = 0; i < postRequest.length; i++) {
+/*for (var i = 0; i < postRequest.length; i++) {
 	console.log(postRequest[0], postRequest[1]);
 	app.post(postRequest[0], postRequest[1]);
-}
+}*/
 
 app.get('/arenas/:id', function(req, res) {
 	var id = parseInt(req.params.id);
