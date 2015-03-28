@@ -20,7 +20,7 @@ module.exports = {
 				return true;
 			}
 		}
-	}
+	},
 
 	add : function(req, res) {
 		var userId = parseInt(req.body.id);
@@ -38,7 +38,7 @@ module.exports = {
 		} else {
 			res.send('rejected')
 		}
-	}
+	},
 
 	leave : function(req, res) {
 		var id = parseInt(req.params.id);
@@ -52,7 +52,7 @@ module.exports = {
 		}
 
 		res.send("removed");
-	}
+	},
 
 	accept : function(req, res) {
 		var response = parseInt(req.body.response);
@@ -65,7 +65,7 @@ module.exports = {
 		}
 
 		res.send("accept");
-	}
+	},
 
 	confirm : function(req, res) {
 		confirmRequests.push({
@@ -73,7 +73,7 @@ module.exports = {
 			response	: res,
 			timestamp	: new Date().getTime()
 		});
-	}
+	},
 
 	accepted : function(req, res) {
 		acceptRequests.push({
