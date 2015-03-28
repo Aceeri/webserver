@@ -21,13 +21,14 @@ var postRequest = [
 	['/accept', matchmaking.accept]
 ];
 var getRequest 	= [
-	['/', function(req, res) { res.send(''); }); ],
-	//['/queue', function(req, res) { res.send(matchmaking.queue) }); ],
-	['/leave/:id', matchmaking.leave],
+	/--matchmaking-/
+		['/', function(req, res) { res.send(''); } ],
+		//['/queue', function(req, res) { res.send(matchmaking.queue) } ],
+		['/leave/:id', matchmaking.leave],
 
-	//polling
-	['/confirm/:id', matchmaking.confirm],
-	['/accept/:id', matchmaking.accept]
+		//polling
+		['/confirm/:id', matchmaking.confirm],
+		['/accept/:id', matchmaking.accept]
 ];
 
 for (int i = 0; i < postRequest.length; i++) {
