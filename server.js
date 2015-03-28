@@ -38,7 +38,7 @@ for (var i = 0; i < postRequest.length; i++) {
 }
 
 for (var i = 0; i < getRequest.length; i++) {
-	console.log('\' + getRequest[i][0] + '\' ' + 'initialized');
+	console.log('\'' + getRequest[i][0] + '\' ' + 'initialized');
 	app.get(getRequest[i][0], getRequest[i][1]);
 }
 
