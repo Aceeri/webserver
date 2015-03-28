@@ -22,7 +22,7 @@ var postRequest = [
 	['/accept', matchmaking.accept]
 ];
 var getRequest 	= [
-	//--matchmaking-//
+	//--matchmaking
 		['/', function(req, res) { res.send(''); } ],
 		//['/queue', function(req, res) { res.send(matchmaking.queue) } ],
 		['/leave/:id', matchmaking.leave],
@@ -33,13 +33,13 @@ var getRequest 	= [
 ];
 
 for (var i = 0; i < postRequest.length; i++) {
-	console.log(i + " " + postRequest[i]);
-	//app.post(postRequest[i][0], postRequest[i][1]);
+	//console.log(i + " " + postRequest[i]);
+	app.post(postRequest[i][0], postRequest[i][1]);
 }
 
 for (var i = 0; i < getRequest.length; i++) {
-	console.log(i + " " + getRequest[i]);
-	//app.get(getRequest[i][0], getRequest[i][1]);
+	//console.log(i + " " + getRequest[i]);
+	app.get(getRequest[i][0], getRequest[i][1]);
 }
 
 app.get('/arenas/:id', function(req, res) {
