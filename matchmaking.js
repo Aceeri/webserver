@@ -1,8 +1,8 @@
 
-var matchmaking 	= { };
+var matchmaking 	= module.exports;
 
 //queues
-matchmaking.queue 	= [ ];
+var queue 			= [ ];
 var confirm 		= { };
 var arenas			= { };
 
@@ -11,7 +11,7 @@ var confirmRequests = [ ];
 var acceptRequests 	= [ ];
 
 matchmaking.inQueue = function(userId, splice) {
-	for (i = 0; i < queue.length; i ++) {
+	for (var i = 0; i < queue.length; i ++) {
 		if (queue[i].id == userId) {
 			if (splice) {
 				queue.splice(i, 1);
@@ -43,7 +43,7 @@ matchmaking.leave = function(req, res) {
 	var id = parseInt(req.params.id);
 	matchmaking.inQueue(id, true);
 
-	for (i = 0; i < confirmRequests.length; i++) {
+	for (var i = 0; i < confirmRequests.length; i++) {
 		if (parseInt(confirmRequests[i].request.params.id) == id) {
 			confirmRequests[i].response.end('left');
 			confirmRequests.splice(i, 1);
@@ -86,8 +86,8 @@ setInterval(function() {
 	var expiration 			= new Date().getTime() - 28000;
 	var acceptExpiration 	= new Date().getTime() - 20000;
 
-	for (p1 = 0; p1 < queue.length; p1++) {
-		for (p2 = 0; p2 < queue.length; p2 ++) {
+	for (var p1 = 0; p1 < queue.length; p1++) {
+		for (var p2 = 0; p2 < queue.length; p2 ++) {
 			var player1 = queue[p1];
 			var player2 = queue[p2];
 			if (player1.type == player2.type && player1.id != player2.id && Math.abs(player1.rank - player2.rank) <= 50) {
