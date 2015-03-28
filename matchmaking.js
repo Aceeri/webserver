@@ -10,76 +10,78 @@ var arenas			= { };
 var confirmRequests = [ ];
 var acceptRequests 	= [ ];
 
-matchmaking.inQueue = function(userId, splice) {
-	for (var i = 0; i < queue.length; i ++) {
-		if (queue[i].id == userId) {
-			if (splice) {
-				queue.splice(i, 1);
+module.exports = {
+	inQueue : function(userId, splice) {
+		for (var i = 0; i < queue.length; i ++) {
+			if (queue[i].id == userId) {
+				if (splice) {
+					queue.splice(i, 1);
+				}
+				return true;
 			}
-			return true;
 		}
 	}
-}
 
-matchmaking.add = function(req, res) {
-	var userId = parseInt(req.body.id);
-	confirm[userId] = undefined;
+	add : function(req, res) {
+		var userId = parseInt(req.body.id);
+		confirm[userId] = undefined;
 
-	if (!matchmaking.inQueue(userId)) {
-		queue.push({
-			name 	: req.body.name,
-			id 		: userId,
-			placeid : parseInt(req.body.placeid),
-			rank 	: parseInt(req.body.rank),
-			type 	: req.body.type
+		if (!matchmaking.inQueue(userId)) {
+			queue.push({
+				name 	: req.body.name,
+				id 		: userId,
+				placeid : parseInt(req.body.placeid),
+				rank 	: parseInt(req.body.rank),
+				type 	: req.body.type
+			});
+			res.send('added');
+		} else {
+			res.send('rejected')
+		}
+	}
+
+	leave : function(req, res) {
+		var id = parseInt(req.params.id);
+		matchmaking.inQueue(id, true);
+
+		for (var i = 0; i < confirmRequests.length; i++) {
+			if (parseInt(confirmRequests[i].request.params.id) == id) {
+				confirmRequests[i].response.end('left');
+				confirmRequests.splice(i, 1);
+			}
+		}
+
+		res.send("removed");
+	}
+
+	accept : function(req, res) {
+		var response = parseInt(req.body.response);
+		var userId   = parseInt(req.body.userId);
+
+		if (confirm[userId].players[0].id == userId) {
+			confirm[userId].players[0].accept = response;
+		} else if (confirm[userId].players[1].id == userId) {
+			confirm[userId].players[1].accept = response;
+		}
+
+		res.send("accept");
+	}
+
+	confirm : function(req, res) {
+		confirmRequests.push({
+			request 	: req,
+			response	: res,
+			timestamp	: new Date().getTime()
 		});
-		res.send('added');
-	} else {
-		res.send('rejected')
-	}
-}
-
-matchmaking.leave = function(req, res) {
-	var id = parseInt(req.params.id);
-	matchmaking.inQueue(id, true);
-
-	for (var i = 0; i < confirmRequests.length; i++) {
-		if (parseInt(confirmRequests[i].request.params.id) == id) {
-			confirmRequests[i].response.end('left');
-			confirmRequests.splice(i, 1);
-		}
 	}
 
-	res.send("removed");
-}
-
-matchmaking.accept = function(req, res) {
-	var response = parseInt(req.body.response);
-	var userId   = parseInt(req.body.userId);
-
-	if (confirm[userId].players[0].id == userId) {
-		confirm[userId].players[0].accept = response;
-	} else if (confirm[userId].players[1].id == userId) {
-		confirm[userId].players[1].accept = response;
+	accepted : function(req, res) {
+		acceptRequests.push({
+			request 	: req,
+			response	: res,
+			timestamp	: new Date().getTime()
+		});
 	}
-
-	res.send("accept");
-}
-
-matchmaking.confirm = function(req, res) {
-	confirmRequests.push({
-		request 	: req,
-		response	: res,
-		timestamp	: new Date().getTime()
-	});
-}
-
-matchmaking.accepted = function(req, res) {
-	acceptRequests.push({
-		request 	: req,
-		response	: res,
-		timestamp	: new Date().getTime()
-	});
 }
 
 setInterval(function() {
@@ -149,5 +151,3 @@ setInterval(function() {
 		}
 	}
 }, 1000);
-
-return matchmaking;
