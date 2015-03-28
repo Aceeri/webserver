@@ -16,30 +16,33 @@ app.use(express.bodyParser());
 var id   = app.param("/^\d+$/");
 var type = app.param("/^\w+$/");
 
-var postRequest = [
-	['/join', matchmaking.add],
-	['/accept', matchmaking.accept]
-];
-var getRequest 	= [
+
+var requests = [
 	//--matchmaking
-		['/', function(req, res) { res.send(''); } ],
-		//['/queue', function(req, res) { res.send(matchmaking.queue) } ],
-		['/leave/:id', matchmaking.leave],
+		{
+			get : [
+				['/', function(req, res) { res.send(''); } ],
+				//['/queue', function(req, res) { res.send(matchmaking.queue) } ],
+				['/leave/:id', matchmaking.leave],
+				['/confirm/:id', matchmaking.confirm],
+				['/accept/:id', matchmaking.accept]
+			],
+			post : [
+				['/join', matchmaking.add],
+				['/accept', matchmaking.accept]
+			]
+		}
+]
 
-		//polling
-		['/confirm/:id', matchmaking.confirm],
-		['/accept/:id', matchmaking.accept]
-];
+requests.forEach(function(request) {
+		for (var getIndex = 0; getIndex < request.get.length; getIndex++) {
+			app.get(request.get[getIndex][0], request.get[getIndex][0]);
+		}
 
-for (var i = 0; i < postRequest.length; i++) {
-	console.log('\'' + postRequest[i][0] + '\' ' + 'initialized');
-	app.post(postRequest[i][0], postRequest[i][1]);
-}
-
-for (var i = 0; i < getRequest.length; i++) {
-	console.log('\'' + getRequest[i][0] + '\' ' + 'initialized');
-	app.get(getRequest[i][0], getRequest[i][1]);
-}
+		for (var postIndex = 0; postIndex < request.post.length; postIndex++) {
+			app.post(request.post[postIndex][0], request.post[postIndex][0]);
+		}
+});
 
 app.get('/arenas/:id', function(req, res) {
 	var id = parseInt(req.params.id);
