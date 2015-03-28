@@ -31,6 +31,7 @@ var getRequest 	= [
 		['/', function(req, res) { res.send(''); } ],
 		//['/queue', function(req, res) { res.send(matchmaking.queue) } ],
 		['/leave/:id', matchmaking.leave],
+		['/arenas/:id', matchmaking.arena],
 
 		//polling
 		['/confirm/:id', matchmaking.confirm],
@@ -46,12 +47,5 @@ for (var i = 0; i < getRequest.length; i++) {
 	console.log('\'' + getRequest[i][0] + '\' ' + 'initialized');
 	app.get(getRequest[i][0], getRequest[i][1]);
 }
-
-app.get('/arenas/:id', function(req, res) {
-	var id = parseInt(req.params.id);
-	//console.log(id) || "");
-	res.send(arenas[id] || "");
-	arenas[id] = undefined;
-});
 
 app.listen(port, ipaddress, function() { console.log("Online"); });

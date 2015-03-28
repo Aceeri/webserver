@@ -83,6 +83,11 @@ module.exports = {
 		res.send("accept");
 	},
 
+	arena : function(req, res) {
+		res.send(arenas[parseInt(req.params.id)] || "");
+		arenas[id] = undefined;
+	},
+
 	confirm : function(req, res) {
 		confirmRequests.push({
 			request 	: req,
