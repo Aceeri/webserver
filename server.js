@@ -32,6 +32,7 @@ var getRequest 	= [
 ];
 
 for (var i = 0; i < postRequest.length; i++) {
+	console.log(postRequest[0], postRequest[1]);
 	app.post(postRequest[0], postRequest[1]);
 }
 
