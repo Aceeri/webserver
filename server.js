@@ -31,7 +31,7 @@ var getRequest 	= [
 		['/accept/:id', matchmaking.accept]
 ];
 
-for (int i = 0; i < postRequest.length; i++) {
+for (var i = 0; i < postRequest.length; i++) {
 	app.post(postRequest[0], postRequest[1]);
 }
 
