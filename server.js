@@ -37,7 +37,7 @@ for (var i = 0; i < postRequest.length; i++) {
 
 app.get('/arenas/:id', function(req, res) {
 	var id = parseInt(req.params.id);
-	console.log(id)] || "");
+	//console.log(id) || "");
 	res.send(arenas[id] || "");
 	arenas[id] = undefined;
 });
