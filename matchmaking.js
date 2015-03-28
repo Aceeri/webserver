@@ -1,6 +1,4 @@
 
-var matchmaking 	= module.exports;
-
 //queues
 var queue 			= [ ];
 var confirm 		= { };
