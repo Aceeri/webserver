@@ -22,7 +22,7 @@ var postRequest = [
 	['/accept', matchmaking.accept]
 ];
 var getRequest 	= [
-	/--matchmaking-/
+	//--matchmaking-//
 		['/', function(req, res) { res.send(''); } ],
 		//['/queue', function(req, res) { res.send(matchmaking.queue) } ],
 		['/leave/:id', matchmaking.leave],
