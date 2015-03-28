@@ -36,7 +36,7 @@ module.exports = {
 				confirm[player2.id] = confirm[player1.id];
 			}
 		}
-	}
+	},
 
 	add : function(req, res) {
 		var userId = parseInt(req.body.id);
