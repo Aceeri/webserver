@@ -17,17 +17,17 @@ var id   = app.param("/^\d+$/");
 var type = app.param("/^\w+$/");
 
 var postRequest = [
-	{'/join', matchmaking.add},
-	{'/accept', matchmaking.accept}
+	['/join', matchmaking.add],
+	['/accept', matchmaking.accept]
 ];
 var getRequest 	= [
-	{'/', function(req, res) { res.send(''); }); },
-	//{'/queue', function(req, res) { res.send(matchmaking.queue) }); },
-	{'/leave/:id', matchmaking.leave},
+	['/', function(req, res) { res.send(''); }); ],
+	//['/queue', function(req, res) { res.send(matchmaking.queue) }); ],
+	['/leave/:id', matchmaking.leave],
 
 	//polling
-	{'/confirm/:id', matchmaking.confirm},
-	{'/accept/:id', matchmaking.accept}
+	['/confirm/:id', matchmaking.confirm],
+	['/accept/:id', matchmaking.accept]
 ];
 
 for (int i = 0; i < postRequest.length; i++) {
