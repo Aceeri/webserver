@@ -1,6 +1,12 @@
 #!/bin/env node
 //require('newrelic');
 var express = require('express');
+var pubnub = require("pubnub")({
+	ssl				: true,
+	publish_key		: "pub-c-0b96f61b-b9a5-4298-a560-cb77d5d77e37",
+	subscribe_key	: "sub-c-f51b4810-d53f-11e4-a113-02ee2ddab7fe"
+});
+
 var matchmaking = require('./matchmaking');
 
 var ipaddress 	= process.env.OPENSHIFT_NODEJS_IP;

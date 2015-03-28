@@ -1,4 +1,10 @@
 
+var pubnub = require("pubnub")({
+	ssl				: true,
+	publish_key		: "pub-c-0b96f61b-b9a5-4298-a560-cb77d5d77e37",
+	subscribe_key	: "sub-c-f51b4810-d53f-11e4-a113-02ee2ddab7fe"
+});
+
 //queues
 var queue 			= [ ];
 var confirm 		= { };
@@ -19,6 +25,18 @@ module.exports = {
 			}
 		}
 	},
+
+	sortQueue : function(player1) {
+		for (var p2 = 0; p2 < queue.length; p2 ++) {
+			var player2 = queue[p2];
+			if (player1.type == player2.type && player1.id != player2.id && Math.abs(player1.rank - player2.rank) <= 50) {
+				queue.splice((p1 > p2) ? p1 : p2, 1);
+				queue.splice((p1 > p2) ? p2 : p1, 1);
+				confirm[player1.id] = { players : [ player1, player2 ], id : player1.placeid, type : player1.type };
+				confirm[player2.id] = confirm[player1.id];
+			}
+		}
+	}
 
 	add : function(req, res) {
 		var userId = parseInt(req.body.id);
@@ -86,7 +104,7 @@ setInterval(function() {
 	var expiration 			= new Date().getTime() - 28000;
 	var acceptExpiration 	= new Date().getTime() - 20000;
 
-	for (var p1 = 0; p1 < queue.length; p1++) {
+	/*for (var p1 = 0; p1 < queue.length; p1++) {
 		for (var p2 = 0; p2 < queue.length; p2 ++) {
 			var player1 = queue[p1];
 			var player2 = queue[p2];
@@ -147,5 +165,5 @@ setInterval(function() {
 				acceptRequests.splice(i, 1);
 			}
 		}
-	}
+	}*/
 }, 1000);
