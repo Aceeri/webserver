@@ -33,12 +33,12 @@ var getRequest 	= [
 ];
 
 for (var i = 0; i < postRequest.length; i++) {
-	//console.log(i + " " + postRequest[i]);
+	console.log('[' + postRequest[i][0] + ']: ' + 'initialized');
 	app.post(postRequest[i][0], postRequest[i][1]);
 }
 
 for (var i = 0; i < getRequest.length; i++) {
-	//console.log(i + " " + getRequest[i]);
+	console.log('[' + getRequest[i][0] + ']: ' + 'initialized');
 	app.get(getRequest[i][0], getRequest[i][1]);
 }
 
