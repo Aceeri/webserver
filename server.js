@@ -21,7 +21,7 @@ var type = app.param("/^\w+$/");
 var postRequest = [
 	//--matchmaking
 		['/join', matchmaking.add],
-		['/accept', matchmaking.accept]
+		['/accept', matchmaking.accept],
 
 	//--proxy
 		['/roblox', proxy.post]
