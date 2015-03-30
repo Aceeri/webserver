@@ -8,7 +8,7 @@ var arenas			= { };
 var confirmRequests = [ ];
 var acceptRequests 	= [ ];
 
-inQueue : function(userId, splice) {
+function inQueue(userId, splice) {
 	for (var i = 0; i < queue.length; i ++) {
 		if (queue[i].id == userId) {
 			if (splice) {
