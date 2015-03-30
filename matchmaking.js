@@ -103,7 +103,7 @@ setInterval(function() {
 	var expiration 			= new Date().getTime() - 28000;
 	var acceptExpiration 	= new Date().getTime() - 20000;
 
-	/*for (var p1 = 0; p1 < queue.length; p1++) {
+	for (var p1 = 0; p1 < queue.length; p1++) {
 		for (var p2 = 0; p2 < queue.length; p2 ++) {
 			var player1 = queue[p1];
 			var player2 = queue[p2];
@@ -164,5 +164,5 @@ setInterval(function() {
 				acceptRequests.splice(i, 1);
 			}
 		}
-	}*/
+	}
 }, 1000);
