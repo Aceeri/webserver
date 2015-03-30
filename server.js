@@ -1,13 +1,9 @@
 #!/bin/env node
 //require('newrelic');
 var express = require('express');
-var pubnub = require("pubnub")({
-	ssl				: true,
-	publish_key		: "pub-c-0b96f61b-b9a5-4298-a560-cb77d5d77e37",
-	subscribe_key	: "sub-c-f51b4810-d53f-11e4-a113-02ee2ddab7fe"
-});
 
 var matchmaking = require('./matchmaking');
+var proxy		= require('./proxy');
 
 var ipaddress 	= process.env.OPENSHIFT_NODEJS_IP;
 var port 		= process.env.OPENSHIFT_NODEJS_PORT || 8080;
@@ -23,8 +19,12 @@ var id   = app.param("/^\d+$/");
 var type = app.param("/^\w+$/");
 
 var postRequest = [
-	['/join', matchmaking.add],
-	['/accept', matchmaking.accept]
+	//--matchmaking
+		['/join', matchmaking.add],
+		['/accept', matchmaking.accept]
+
+	//--proxy
+		['/roblox', proxy.post]
 ];
 var getRequest 	= [
 	//--matchmaking
@@ -35,7 +35,10 @@ var getRequest 	= [
 
 		//polling
 		['/confirm/:id', matchmaking.confirm],
-		['/accept/:id', matchmaking.accept]
+		['/accept/:id', matchmaking.accept],
+
+	//--proxy
+		['/roblox', proxy.get]
 ];
 
 for (var i = 0; i < postRequest.length; i++) {
