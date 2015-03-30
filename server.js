@@ -24,7 +24,7 @@ var postRequest = [
 		['/accept', matchmaking.accept],
 
 	//--proxy
-		['/roblox', proxy.post]
+		['/roblox/', proxy.post]
 ];
 var getRequest 	= [
 	//--matchmaking
@@ -38,7 +38,7 @@ var getRequest 	= [
 		['/accept/:id', matchmaking.accept],
 
 	//--proxy
-		['/roblox', proxy.get]
+		['/roblox/', proxy.get]
 ];
 
 for (var i = 0; i < postRequest.length; i++) {
