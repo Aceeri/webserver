@@ -17,7 +17,7 @@ function inQueue(userId, splice) {
 			return true;
 		}
 	}
-},
+}
 
 module.exports = {
 	inQueue : function(userId, splice) {
