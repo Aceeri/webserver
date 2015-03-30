@@ -161,7 +161,7 @@ setInterval(function() {
 			if (set && !canceled) {
 				response.write('accepted');
 				response.end();
-				confirm[parseInt(acceptRequests[i].request.params.id)] = undefined;
+				//confirm[parseInt(acceptRequests[i].request.params.id)] = undefined;
 				acceptRequests.splice(i, 1);
 			} else if (acceptRequests[i].timestamp < acceptExpiration || canceled) {
 				if (request.players[playerIndex].accept == 2 || request.players[playerIndex].accept == 0) {
@@ -171,7 +171,7 @@ setInterval(function() {
 					response.write('added');
 					response.end('');
 				}
-				confirm[parseInt(acceptRequests[i].request.params.id)] = undefined;
+				//confirm[parseInt(acceptRequests[i].request.params.id)] = undefined;
 				acceptRequests.splice(i, 1);
 			}
 		}
