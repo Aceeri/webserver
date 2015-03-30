@@ -3,7 +3,7 @@
 var express = require('express');
 
 var matchmaking = require('./matchmaking');
-var proxy		= require('./proxy');
+//var proxy		= require('./proxy');
 
 var ipaddress 	= process.env.OPENSHIFT_NODEJS_IP;
 var port 		= process.env.OPENSHIFT_NODEJS_PORT || 8080;
@@ -24,7 +24,7 @@ var postRequest = [
 		['/accept', matchmaking.accept],
 
 	//--proxy
-		['/roblox', proxy.post]
+		//['/roblox', proxy.post]
 ];
 var getRequest 	= [
 	//--matchmaking
@@ -38,17 +38,17 @@ var getRequest 	= [
 		['/accept/:id', matchmaking.accept],
 
 	//--proxy
-		['/roblox/', proxy.get]
+		//['/roblox/', proxy.get]
 ];
 
 for (var i = 0; i < postRequest.length; i++) {
 	console.log('\'' + postRequest[i][0] + '\' ' + 'initialized');
-	app.post(postRequest[i][0] + '/?', postRequest[i][1]);
+	app.post(postRequest[i][0], postRequest[i][1]);
 }
 
 for (var i = 0; i < getRequest.length; i++) {
 	console.log('\'' + getRequest[i][0] + '\' ' + 'initialized');
-	app.get(getRequest[i][0] + '/?', getRequest[i][1]);
+	app.get(getRequest[i][0], getRequest[i][1]);
 }
 
 app.listen(port, ipaddress, function() { console.log("Online"); });
