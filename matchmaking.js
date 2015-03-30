@@ -57,7 +57,7 @@ module.exports = {
 			});
 			res.send('added');
 		} else {
-			res.send('rejected')
+			res.send('rejected');
 		}
 	},
 
