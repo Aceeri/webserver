@@ -8,6 +8,17 @@ var arenas			= { };
 var confirmRequests = [ ];
 var acceptRequests 	= [ ];
 
+inQueue : function(userId, splice) {
+	for (var i = 0; i < queue.length; i ++) {
+		if (queue[i].id == userId) {
+			if (splice) {
+				queue.splice(i, 1);
+			}
+			return true;
+		}
+	}
+},
+
 module.exports = {
 	inQueue : function(userId, splice) {
 		for (var i = 0; i < queue.length; i ++) {
@@ -36,7 +47,7 @@ module.exports = {
 		var userId = parseInt(req.body.id);
 		confirm[userId] = undefined;
 
-		if (!matchmaking.inQueue(userId)) {
+		if (!inQueue(userId)) {
 			queue.push({
 				name 	: req.body.name,
 				id 		: userId,
@@ -52,7 +63,7 @@ module.exports = {
 
 	leave : function(req, res) {
 		var id = parseInt(req.params.id);
-		matchmaking.inQueue(id, true);
+		inQueue(id, true);
 
 		for (var i = 0; i < confirmRequests.length; i++) {
 			if (parseInt(confirmRequests[i].request.params.id) == id) {
