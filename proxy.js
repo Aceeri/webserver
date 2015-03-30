@@ -2,7 +2,7 @@ var request = require('request');
 
 module.exports = {
 	get : function(req, res) {
-		console.log(req.url);
+		//console.log(req.url);
 		res.send(req.url);
 	},
 
