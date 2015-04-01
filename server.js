@@ -29,13 +29,12 @@ var postRequest = [
 var getRequest 	= [
 	//--matchmaking
 		['/', function(req, res) { res.send(''); } ],
-		//['/queue', function(req, res) { res.send(matchmaking.queue) } ],
 		['/leave/:id', matchmaking.leave],
 		['/arenas/:id', matchmaking.arena],
 
 		//polling
 		['/confirm/:id', matchmaking.confirm],
-		['/accept/:id', matchmaking.accept],
+		['/accept/:id', matchmaking.accepted],
 
 	//--proxy
 		//['/roblox/', proxy.get]
