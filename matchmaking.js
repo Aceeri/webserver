@@ -45,7 +45,7 @@ module.exports = {
 
 	add : function(req, res) {
 		var userId = parseInt(req.body.id);
-		confirm[userId] = undefined;
+		//confirm[userId] = undefined;
 
 		if (!inQueue(userId)) {
 			queue.push({
@@ -79,7 +79,7 @@ module.exports = {
 		var response = parseInt(req.body.response);
 		var userId   = parseInt(req.body.userId);
 
-		console.log(confirm[userId]);
+		//console.log(confirm[userId]);
 		if (confirm[userId] != undefined) {
 			if (confirm[userId].players[0].id == userId) {
 				confirm[userId].players[0].accept = response;
