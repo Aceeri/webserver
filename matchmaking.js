@@ -79,10 +79,13 @@ module.exports = {
 		var response = parseInt(req.body.response);
 		var userId   = parseInt(req.body.userId);
 
-		if (confirm[userId].players[0].id == userId) {
-			confirm[userId].players[0].accept = response;
-		} else if (confirm[userId].players[1].id == userId) {
-			confirm[userId].players[1].accept = response;
+		console.log(confirm[userId]);
+		if (confirm[userId] != undefined) {
+			if (confirm[userId].players[0].id == userId) {
+				confirm[userId].players[0].accept = response;
+			} else if (confirm[userId].players[1].id == userId) {
+				confirm[userId].players[1].accept = response;
+			}
 		}
 
 		res.send("accept");
@@ -90,7 +93,7 @@ module.exports = {
 
 	arena : function(req, res) {
 		res.send(arenas[parseInt(req.params.id)] || "");
-		arenas[id] = undefined;
+		arenas[parseInt(req.params.id)] = undefined;
 	},
 
 	confirm : function(req, res) {
@@ -161,7 +164,7 @@ setInterval(function() {
 			if (set && !canceled) {
 				response.write('accepted');
 				response.end();
-				//confirm[parseInt(acceptRequests[i].request.params.id)] = undefined;
+				confirm[parseInt(acceptRequests[i].request.params.id)] = undefined;
 				acceptRequests.splice(i, 1);
 			} else if (acceptRequests[i].timestamp < acceptExpiration || canceled) {
 				if (request.players[playerIndex].accept == 2 || request.players[playerIndex].accept == 0) {
@@ -171,7 +174,7 @@ setInterval(function() {
 					response.write('added');
 					response.end('');
 				}
-				//confirm[parseInt(acceptRequests[i].request.params.id)] = undefined;
+				confirm[parseInt(acceptRequests[i].request.params.id)] = undefined;
 				acceptRequests.splice(i, 1);
 			}
 		}
