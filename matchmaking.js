@@ -1,6 +1,11 @@
 
+//valid match types
+var matchTypes		= [
+	'normal'
+];
+
 //queues
-var queue 			= [ ];
+var queue 			= { };
 var confirm 		= { };
 var arenas			= { };
 
@@ -8,53 +13,65 @@ var arenas			= { };
 var confirmRequests = [ ];
 var acceptRequests 	= [ ];
 
-function inQueue(userId, splice) {
-	for (var i = 0; i < queue.length; i ++) {
-		if (queue[i].id == userId) {
-			if (splice) {
-				queue.splice(i, 1);
-			}
-			return true;
-		}
-	}
+//setup queue for valid match types
+for (var type in matchTypes) {
+	queue[type] = { };
 }
 
-module.exports = {
-	inQueue : function(userId, splice) {
-		for (var i = 0; i < queue.length; i ++) {
-			if (queue[i].id == userId) {
-				if (splice) {
-					queue.splice(i, 1);
+exports = {
+	inQueue : function(userId, remove) {
+		for (var type in queue) {
+			if (queue[type][userId]) {
+				if (remove) {
+					delete queue[type][userId];
 				}
 				return true;
 			}
 		}
+		return false;
 	},
 
 	sortQueue : function(player1) {
-		for (var p2 = 0; p2 < queue.length; p2 ++) {
-			var player2 = queue[p2];
-			if (player1.type == player2.type && player1.id != player2.id && Math.abs(player1.rank - player2.rank) <= 50) {
-				queue.splice((p1 > p2) ? p1 : p2, 1);
-				queue.splice((p1 > p2) ? p2 : p1, 1);
-				confirm[player1.id] = { players : [ player1, player2 ], id : player1.placeid, type : player1.type };
-				confirm[player2.id] = confirm[player1.id];
+		for (var type in queue) {
+			for (var player in queue[type]) {
+				for (var player2 in queue[type]) {
+					if (player != player2 && player1.rank - player2.rank <= 50) {
+						confirm[player] = {
+							players : [
+								queue[type][player],
+								queue[type][player2]
+							]
+							id 		: queue[type][player].placeid,
+							type 	: type;
+						}
+						confirm[player2] = confirm[player];
+					}
+				}
 			}
 		}
 	},
 
 	add : function(req, res) {
-		var userId = parseInt(req.body.id);
-		//confirm[userId] = undefined;
+		var userId = req.body.id;
+		delete confirm[userId];
 
-		if (!inQueue(userId)) {
-			queue.push({
+		var validType = false;
+		for (var type in matchTypes) {
+			if (type == req.body.type) {
+				validType = true;
+				break;
+			}
+		}
+
+		if (!inQueue(userId) && validType) {
+			queue[req.body.type][userId] = {
 				name 	: req.body.name,
 				id 		: userId,
-				placeid : parseInt(req.body.placeid),
-				rank 	: parseInt(req.body.rank),
+				placeid : req.body.placeid,
+				rank 	: req.body.rank,
 				type 	: req.body.type
-			});
+			};
+
 			res.send('added');
 		} else {
 			res.send('rejected');
@@ -62,11 +79,11 @@ module.exports = {
 	},
 
 	leave : function(req, res) {
-		var id = parseInt(req.params.id);
+		var id = req.params.id;
 		inQueue(id, true);
 
 		for (var i = 0; i < confirmRequests.length; i++) {
-			if (parseInt(confirmRequests[i].request.params.id) == id) {
+			if (confirmRequests[i].request.params.id == id) {
 				confirmRequests[i].response.end('left');
 				confirmRequests.splice(i, 1);
 			}
@@ -76,10 +93,9 @@ module.exports = {
 	},
 
 	accept : function(req, res) {
-		var response = parseInt(req.body.response);
-		var userId   = parseInt(req.body.userId);
+		var response = req.body.response;
+		var userId   = req.body.userId;
 
-		//console.log(confirm[userId]);
 		if (confirm[userId] != undefined) {
 			if (confirm[userId].players[0].id == userId) {
 				confirm[userId].players[0].accept = response;
@@ -92,8 +108,8 @@ module.exports = {
 	},
 
 	arena : function(req, res) {
-		res.send(arenas[parseInt(req.params.id)] || "");
-		arenas[parseInt(req.params.id)] = undefined;
+		res.send(arenas[req.params.id] || "");
+		delete arenas[req.params.id];
 	},
 
 	confirm : function(req, res) {
@@ -117,24 +133,13 @@ setInterval(function() {
 	var expiration 			= new Date().getTime() - 28000;
 	var acceptExpiration 	= new Date().getTime() - 20000;
 
-	for (var p1 = 0; p1 < queue.length; p1++) {
-		for (var p2 = 0; p2 < queue.length; p2 ++) {
-			var player1 = queue[p1];
-			var player2 = queue[p2];
-			if (player1.type == player2.type && player1.id != player2.id && Math.abs(player1.rank - player2.rank) <= 50) {
-				queue.splice((p1 > p2) ? p1 : p2, 1);
-				queue.splice((p1 > p2) ? p2 : p1, 1);
-				confirm[player1.id] = { players : [ player1, player2 ], id : player1.placeid, type : player1.type };
-				confirm[player2.id] = confirm[player1.id];
-			}
-		}
-	}
+	exports.sortQueue();
 
 	var response;
 	for (var i = confirmRequests.length - 1; i >= 0; i--) {
 		response = confirmRequests[i].response;
-		if (confirm[parseInt(confirmRequests[i].request.params.id)] != undefined) {
-			response.write(JSON.stringify(confirm[parseInt(confirmRequests[i].request.params.id)]));
+		if (confirm[confirmRequests[i].request.params.id] != undefined) {
+			response.write(JSON.stringify(confirm[confirmRequests[i].request.params.id]));
 			response.end();
 			confirmRequests.splice(i, 1);
 		} else if (confirmRequests[i].timestamp < expiration) {
@@ -147,14 +152,14 @@ setInterval(function() {
 		var set = true;
 		var canceled = false;
 		var playerIndex;
-		var request = confirm[parseInt(acceptRequests[i].request.params.id)];
+		var request = confirm[acceptRequests[i].request.params.id];
 		if (request != undefined) {
 			for (var l = 0; l < request.players.length; l ++) {
 				if (request.players[l].accept == undefined) {
 					set = false;
 				} else if (request.players[l].accept == 2) {
 					canceled = true;
-					if (request.players[l].id == parseInt(acceptRequests[i].request.params.id)) {
+					if (request.players[l].id == acceptRequests[i].request.params.id) {
 						playerIndex = l;
 					}
 				}
@@ -164,7 +169,7 @@ setInterval(function() {
 			if (set && !canceled) {
 				response.write('accepted');
 				response.end();
-				confirm[parseInt(acceptRequests[i].request.params.id)] = undefined;
+				confirm[acceptRequests[i].request.params.id] = undefined;
 				acceptRequests.splice(i, 1);
 			} else if (acceptRequests[i].timestamp < acceptExpiration || canceled) {
 				if (request.players[playerIndex].accept == 2 || request.players[playerIndex].accept == 0) {
@@ -174,7 +179,7 @@ setInterval(function() {
 					response.write('added');
 					response.end('');
 				}
-				confirm[parseInt(acceptRequests[i].request.params.id)] = undefined;
+				confirm[acceptRequests[i].request.params.id] = undefined;
 				acceptRequests.splice(i, 1);
 			}
 		}
