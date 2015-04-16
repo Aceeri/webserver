@@ -40,9 +40,9 @@ exports = {
 							players : [
 								queue[type][player],
 								queue[type][player2]
-							]
+							],
 							id 		: queue[type][player].placeid,
-							type 	: type;
+							type 	: type
 						}
 						confirm[player2] = confirm[player];
 					}
