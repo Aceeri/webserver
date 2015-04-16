@@ -58,13 +58,13 @@ module.exports = {
 		var validType = false;
 		for (var type in matchTypes) {
 			console.log(type + " " + req.body.type);
-			if (type == req.body.type) {
+			if (matchTypes[type] == req.body.type) {
 				validType = true;
 				break;
 			}
 		}
 
-		console.log(userId + "attempting to join queue");
+		console.log(userId + " attempting to join queue");
 		console.log(module.exports.inQueue(userId) + " " + validType);
 		if (!module.exports.inQueue(userId) && validType) {
 			queue[req.body.type][userId] = {
