@@ -18,7 +18,7 @@ for (var type in matchTypes) {
 	queue[type] = { };
 }
 
-exports = {
+module.exports = {
 	inQueue : function(userId, remove) {
 		for (var type in queue) {
 			if (queue[type][userId]) {
