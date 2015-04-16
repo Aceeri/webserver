@@ -63,7 +63,7 @@ module.exports = {
 			}
 		}
 
-		if (!inQueue(userId) && validType) {
+		if (!module.exports.inQueue(userId) && validType) {
 			queue[req.body.type][userId] = {
 				name 	: req.body.name,
 				id 		: userId,
@@ -80,7 +80,7 @@ module.exports = {
 
 	leave : function(req, res) {
 		var id = req.params.id;
-		inQueue(id, true);
+		module.exports.inQueue(id, true);
 
 		for (var i = 0; i < confirmRequests.length; i++) {
 			if (confirmRequests[i].request.params.id == id) {
@@ -133,7 +133,7 @@ setInterval(function() {
 	var expiration = new Date().getTime() - 28000;
 	var acceptExpiration = new Date().getTime() - 20000;
 
-	exports.sortQueue();
+	module.exports.sortQueue();
 
 	var response;
 	for (var i = confirmRequests.length - 1; i >= 0; i--) {
