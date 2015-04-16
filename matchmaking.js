@@ -67,6 +67,8 @@ module.exports = {
 		console.log(userId + " attempting to join queue");
 		console.log(module.exports.inQueue(userId) + " " + validType);
 		if (!module.exports.inQueue(userId) && validType) {
+			console.log(req.body.type);
+			console.log(queue[req.body.type]);
 			queue[req.body.type][userId] = {
 				name 	: req.body.name,
 				id 		: userId,
