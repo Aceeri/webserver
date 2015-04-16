@@ -40,14 +40,15 @@ var getRequest 	= [
 		//['/roblox/', proxy.get]
 ];
 
+console.log("Attempting to initialize request listeners");
 for (var i = 0; i < postRequest.length; i++) {
-	console.log('\'' + postRequest[i][0] + '\' ' + 'initialized');
 	app.post(postRequest[i][0], postRequest[i][1]);
+	console.log('\'' + postRequest[i][0] + '\' ' + 'initialized');
 }
 
 for (var i = 0; i < getRequest.length; i++) {
-	console.log('\'' + getRequest[i][0] + '\' ' + 'initialized');
 	app.get(getRequest[i][0], getRequest[i][1]);
+	console.log('\'' + getRequest[i][0] + '\' ' + 'initialized');
 }
 
 app.listen(port, ipaddress, function() { console.log("Online"); });
