@@ -15,7 +15,7 @@ var acceptRequests = [ ];
 
 //setup queue for valid match types
 for (var type in matchTypes) {
-	queue[type] = { };
+	queue[matchTypes[type]] = { };
 }
 
 module.exports = {
