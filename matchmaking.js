@@ -35,7 +35,7 @@ module.exports = {
 		for (var type in queue) {
 			for (var player in queue[type]) {
 				for (var player2 in queue[type]) {
-					if (player != player2 && player1.rank - player2.rank <= 50) {
+					if (player != player2 && queue[player].rank - queue[player2].rank <= 50) {
 						confirm[player] = {
 							players : [
 								queue[type][player],
