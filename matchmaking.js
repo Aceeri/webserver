@@ -57,7 +57,7 @@ module.exports = {
 
 		var validType = false;
 		for (var type in matchTypes) {
-			console.log(type + " " req.body.type);
+			console.log(type + " " + req.body.type);
 			if (type == req.body.type) {
 				validType = true;
 				break;
