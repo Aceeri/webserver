@@ -1,17 +1,17 @@
 
 //valid match types
-var matchTypes		= [
+var matchTypes = [
 	'normal'
 ];
 
 //queues
-var queue 			= { };
-var confirm 		= { };
-var arenas			= { };
+var queue = { };
+var confirm = { };
+var arenas = { };
 
 //polling arrays
 var confirmRequests = [ ];
-var acceptRequests 	= [ ];
+var acceptRequests = [ ];
 
 //setup queue for valid match types
 for (var type in matchTypes) {
@@ -130,8 +130,8 @@ exports = {
 }
 
 setInterval(function() {
-	var expiration 			= new Date().getTime() - 28000;
-	var acceptExpiration 	= new Date().getTime() - 20000;
+	var expiration = new Date().getTime() - 28000;
+	var acceptExpiration = new Date().getTime() - 20000;
 
 	exports.sortQueue();
 
