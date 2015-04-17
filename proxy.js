@@ -3,6 +3,7 @@ var request = require("request");
 module.exports = {
 
 	isProxy : function(url) {
+		console.log("checking if " + url + " is a proxy url");
 	    var match = url.match(/\/roblox\//);
 	    if (match != null && match.index == 0) {
 	        return true;
@@ -12,6 +13,7 @@ module.exports = {
 	},
 
 	getPath : function(url) {
+		console.log("getting path");
 		return url.match(/\/roblox\/(.+)/);
 	},
 
