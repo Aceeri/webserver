@@ -15,10 +15,10 @@ var acceptRequests = [ ];
 
 //setup queue for valid match types
 for (var type in matchTypes) {
-	queue[type] = { };
+	queue[matchTypes[type]] = { };
 }
 
-exports = {
+module.exports = {
 	inQueue : function(userId, remove) {
 		for (var type in queue) {
 			if (queue[type][userId]) {
@@ -35,7 +35,7 @@ exports = {
 		for (var type in queue) {
 			for (var player in queue[type]) {
 				for (var player2 in queue[type]) {
-					if (player != player2 && player1.rank - player2.rank <= 50) {
+					if (player != player2 && queue[player].rank - queue[player2].rank <= 50) {
 						confirm[player] = {
 							players : [
 								queue[type][player],
@@ -57,13 +57,14 @@ exports = {
 
 		var validType = false;
 		for (var type in matchTypes) {
-			if (type == req.body.type) {
+			if (matchTypes[type] == req.body.type) {
 				validType = true;
 				break;
 			}
 		}
 
-		if (!inQueue(userId) && validType) {
+		console.log(userId + " attempting to join queue");
+		if (!module.exports.inQueue(userId) && validType) {
 			queue[req.body.type][userId] = {
 				name 	: req.body.name,
 				id 		: userId,
@@ -80,7 +81,7 @@ exports = {
 
 	leave : function(req, res) {
 		var id = req.params.id;
-		inQueue(id, true);
+		module.exports.inQueue(id, true);
 
 		for (var i = 0; i < confirmRequests.length; i++) {
 			if (confirmRequests[i].request.params.id == id) {
@@ -133,7 +134,7 @@ setInterval(function() {
 	var expiration = new Date().getTime() - 28000;
 	var acceptExpiration = new Date().getTime() - 20000;
 
-	exports.sortQueue();
+	module.exports.sortQueue();
 
 	var response;
 	for (var i = confirmRequests.length - 1; i >= 0; i--) {
