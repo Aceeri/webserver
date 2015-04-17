@@ -50,4 +50,8 @@ for (var i = 0; i < getRequest.length; i++) {
 	app.get(getRequest[i][0], getRequest[i][1]);
 }
 
+app.use(function(req, res) {
+	console.log(req.path);
+})
+
 app.listen(port, ipaddress, function() { console.log("Online"); });
