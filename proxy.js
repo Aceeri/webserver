@@ -16,12 +16,15 @@ module.exports = {
 	},
 
 	getRoblox : function(response, path) {
+		console.log("attempting to get " + path);
 		request
 			.get("http://www.roblox.com/" + path)
-			.on('response', function(res){
+			.on('response', function(res) {
+				console.log(res);
 				response.send(res);
 			})
-			.on('error', function(err){
+			.on('error', function(err) {
+				console.log(err);
 				response.send(err);
 			});
 		//response.end();
