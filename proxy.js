@@ -19,11 +19,11 @@ module.exports = {
 		request
 			.get("http://www.roblox.com/" + path)
 			.on('response', function(res){
-				response.write(res);
+				response.send(res);
 			})
 			.on('error', function(err){
-				response.write(err);
+				response.send(err);
 			});
-		response.end();
+		//response.end();
 	},
 }
