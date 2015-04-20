@@ -31,6 +31,7 @@ var getRequest 	= [
 		['/', function(req, res) { res.send(''); } ],
 		['/leave/:id', matchmaking.leave],
 		['/arenas/:id', matchmaking.arena],
+		['/confirm/remove/:id', matchmaking.remove]
 
 		//polling
 		['/confirm/:id', matchmaking.confirm],

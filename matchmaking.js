@@ -93,6 +93,10 @@ module.exports = {
 		res.send("removed");
 	},
 
+	remove : function(req, res) {
+		delete confirm[req.params.id];
+	}
+
 	accept : function(req, res) {
 		var response = req.body.response;
 		var userId   = req.body.userId;
