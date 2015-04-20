@@ -95,7 +95,7 @@ module.exports = {
 
 	remove : function(req, res) {
 		delete confirm[req.params.id];
-	}
+	},
 
 	accept : function(req, res) {
 		var response = req.body.response;
