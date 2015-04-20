@@ -9,9 +9,9 @@ var queue = { };
 var confirm = { };
 var arenas = { };
 
-//polling arrays
-var confirmRequests = [ ];
-var acceptRequests = [ ];
+//polling objects
+var confirmRequests = { };
+var acceptRequests = { };
 
 //setup queue for valid match types
 for (var type in matchTypes) {
@@ -83,6 +83,7 @@ module.exports = {
 		var id = req.params.id;
 		module.exports.inQueue(id, true);
 
+		//possibly don't need this
 		for (var i = 0; i < confirmRequests.length; i++) {
 			if (confirmRequests[i].request.params.id == id) {
 				confirmRequests[i].response.end('left');
@@ -119,19 +120,31 @@ module.exports = {
 	},
 
 	confirm : function(req, res) {
-		confirmRequests.push({
+		confirmRequests[req.params.id] = {
 			request 	: req,
 			response	: res,
 			timestamp	: new Date().getTime()
-		});
+		};
+
+		/*confirmRequests.push({
+			request 	: req,
+			response	: res,
+			timestamp	: new Date().getTime()
+		});*/
 	},
 
 	accepted : function(req, res) {
-		acceptRequests.push({
+		acceptRequests[req.params.id] = {
 			request 	: req,
 			response	: res,
 			timestamp	: new Date().getTime()
-		});
+		}
+
+		/*acceptRequests.push({
+			request 	: req,
+			response	: res,
+			timestamp	: new Date().getTime()
+		});*/
 	}
 }
 
@@ -142,41 +155,38 @@ setInterval(function() {
 	module.exports.sortQueue();
 
 	var response;
-	for (var i = confirmRequests.length - 1; i >= 0; i--) {
-		response = confirmRequests[i].response;
-		if (confirm[confirmRequests[i].request.params.id] != undefined) {
-			response.write(JSON.stringify(confirm[confirmRequests[i].request.params.id]));
+	for (var request in confirmRequests) {
+		response = confirmRequests[request].response;
+		if (confirm[confirmRequests[request].request.params.id] != undefined) {
+			response.write(JSON.stringify(confirm[confirmRequests[request].request.params.id]));
 			response.end();
-			confirmRequests.splice(i, 1);
-		} else if (confirmRequests[i].timestamp < expiration) {
+			delete confirmRequests[request];
+		} else if (confirmRequests[request].timestamp < expiration) {
 			response.end('');
 		}
 	}
 
-	for (var i = acceptRequests.length - 1; i >= 0; i--) {
-		response = acceptRequests[i].response;
-		var set = true;
-		var canceled = false;
-		var playerIndex;
-		var request = confirm[acceptRequests[i].request.params.id];
-		if (request != undefined) {
-			for (var l = 0; l < request.players.length; l ++) {
-				if (request.players[l].accept == undefined) {
+	for (var request in acceptRequests) {
+		response = acceptRequests[request].response;
+		var set = true, canceled = false, playerIndex;
+		if (confirm[request] != undefined) {
+			for (var player in confirm[request].players) {
+				if (confirm[request].players[player].accept == undefined) {
 					set = false;
-				} else if (request.players[l].accept == 2) {
+				} else if (confirm[request].players[player].accept == 2 || confirm[confirm[request].players[player].id] == undefined) {
 					canceled = true;
-					if (request.players[l].id == acceptRequests[i].request.params.id) {
-						playerIndex = l;
+					if (confirm[request].players[player].id == acceptRequest[request].request.params.id) {
+						playerIndex = player;
 					}
 				}
 			}
 
-		
 			if (set && !canceled) {
 				response.write('accepted');
 				response.end();
 				confirm[acceptRequests[i].request.params.id] = undefined;
-				acceptRequests.splice(i, 1);
+				delete acceptRequests[request];
+
 			} else if (acceptRequests[i].timestamp < acceptExpiration || canceled) {
 				if (request.players[playerIndex].accept == 2 || request.players[playerIndex].accept == 0) {
 					response.end('');
@@ -185,8 +195,9 @@ setInterval(function() {
 					response.write('added');
 					response.end('');
 				}
-				confirm[acceptRequests[i].request.params.id] = undefined;
-				acceptRequests.splice(i, 1);
+
+				delete confirm[acceptRequests[request].request.params.id];
+				delete acceptRequests[request];
 			}
 		}
 	}
