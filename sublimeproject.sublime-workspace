@@ -11,7 +11,15 @@
 			"file": "matchmaking.js",
 			"settings":
 			{
-				"buffer_size": 4242,
+				"buffer_size": 4786,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "server.js",
+			"settings":
+			{
+				"buffer_size": 1447,
 				"line_ending": "Windows"
 			}
 		}
@@ -48,7 +56,7 @@
 	},
 	"expanded_folders":
 	[
-		"/C/Users/Aceeri/Documents/GitHub/webserver"
+		"/C/GitHub/aceeri"
 	],
 	"file_history":
 	[
@@ -120,15 +128,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4242,
+						"buffer_size": 4786,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								927,
-								927
+								189,
+								189
 							]
 						],
 						"settings":
@@ -137,10 +145,39 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1125.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "server.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1447,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								898,
+								898
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 180.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
 					"type": "text"
 				}
 			]
@@ -227,7 +264,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 229.0,
+	"side_bar_width": 152.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{
